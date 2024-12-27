@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form Submissions</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-Fo3rlrQkTyIcYSWhDlZFwkJT44nKMtJ9mDZr8VzzXfuTjDGxz5sYo6O0TTaoHBTJ6Kk94wLAl1yZiQxgUgKXuw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Basic styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .contacts-container {
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Return Button */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #48f;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .return-button i {
+            margin-right: 8px;
+        }
+
+        .return-button:hover {
+            background-color: #36c;
+        }
+
+        .contacts-container h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            display: block;
+            width: 150px;
+            margin: 0 auto 20px auto;
+            padding: 10px;
+            background-color: #ff4d4d;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn i {
+            margin-right: 8px;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff1a1a;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        /* No Data Message */
+        .no-data {
+            text-align: center;
+            color: #777;
+            font-size: 18px;
+        }
+
+        /* Responsive Table */
+        @media screen and (max-width: 768px) {
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            table tr {
+                margin-bottom: 15px;
+            }
+
+            table th {
+                background-color: transparent;
+                color: #333;
+                font-weight: bold;
+                padding-top: 0;
+            }
+
+            table td {
+                padding-left: 50%;
+                position: relative;
+            }
+
+            table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                padding-left: 15px;
+                font-weight: bold;
+                white-space: nowrap;
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 6px solid #28a745;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .success-message i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contacts-container">
+        <!-- Return Button -->
+        <a href="contact.html" class="return-button"><i class="fas fa-arrow-left"></i>Return</a>
+
+        <h1><i class="fas fa-comments"></i> Contact Submissions</h1>
+
+        <!-- Logout Button -->
+        <a href="home.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+
+
+
+        <table id="contactTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Submitted At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be dynamically inserted by JavaScript -->
+            </tbody>
+        </table>
+
+        <p class="no-data" id="noDataMessage">Loading data...</p>
+
+        <!-- Optional: Update Grades button if needed in the future -->
+        <!-- <button class="update-button" onclick="assignGrades()"><i class="fas fa-sync-alt"></i> Update Grades</button> -->
+
+    </div>
+
+    <!-- Font Awesome for Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchContacts();
+        });
+
+        // Function to fetch contact records via AJAX
+        function fetchContacts() {
+            fetch('fetchcontacts.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    populateTable(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching contact records:', error);
+                    document.getElementById('noDataMessage').textContent = 'Failed to load data.';
+                });
+        }
+
+        // Function to dynamically populate the table with contact data
+        function populateTable(contacts) {
+            let tableBody = document.querySelector('#contactTable tbody');
+            let noDataMessage = document.getElementById('noDataMessage');
+            tableBody.innerHTML = ''; // Clear existing table rows
+
+            if (contacts.length === 0) {
+                noDataMessage.textContent = 'No contact submissions found.';
+                return;
+            }
+
+            noDataMessage.style.display = 'none'; // Hide the "Loading" message
+
+            contacts.forEach(contact => {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td data-label="ID">${escapeHTML(contact.id)}</td>
+                    <td data-label="Name">${escapeHTML(contact.name)}</td>
+                    <td data-label="Email">${escapeHTML(contact.email)}</td>
+                    <td data-label="Subject">${escapeHTML(contact.subject)}</td>
+                    <td data-label="Message">${escapeHTML(contact.message).replace(/\n/g, '<br>')}</td>
+                    <td data-label="Submitted At">${escapeHTML(contact.submitted_at)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to escape HTML to prevent XSS
+        function escapeHTML(str) {
+            if (typeof str !== 'string') {
+                return str;
+            }
+            return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertainment Paradise</title>
+    <link rel="stylesheet" href="home.css">
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="home.html" class="nav-link">Home</a>
+            <a href="introduction.html" class="nav-link">About</a>
+            <a href="contact.html" class="nav-link">Contact Us</a>
+            <a href="help.html" class="nav-link">Help</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="hero-section">
+            <h1 class="main-title">Entertainment Paradise</h1>
+            <img src="images/hero.jpeg" alt="Hero Image" class="hero-image">
+            <p class="sub-title">Where fun begins! Let your journey start now...</p>
+            <button class="expand-button" onclick="toggleLinks()">Start Your Adventure</button>
+        </div>
+
+        <!-- Expandable Section -->
+        <div id="expandable-links" class="expandable-links">
+            <ul>
+                <li><a href="game/game.html">🎮 Games</a></li>
+                <li><a href="movie/MovieInfo.html">🎬 Movies</a></li>
+                <li><a href="book/BookInfo.html">📚 Books</a></li>
+                <li><a href="more/more.html">➕ More</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Entertainment Paradise. All Rights Reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        function toggleLinks() {
+            var links = document.getElementById("expandable-links");
+            links.classList.toggle("show");
+        }
+    </script>
+</body>
+
+</html>
